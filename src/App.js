@@ -1,14 +1,12 @@
 import { useEffect, useState, useRef } from "react";
 import "./styles.css";
 
-import { Map, NavigationControl, Marker, Popup } from "react-map-gl";
+import { Map, NavigationControl } from "react-map-gl";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { Protocol } from "pmtiles";
 
 export default function App() {
-  const [showPopup, setShowPopup] = useState(true);
-  const [userLocation, setUserLocation] = useState(null);
   const mapRef = useRef(null);
   const [viewport, setViewport] = useState({
     // width: "100vw",
@@ -26,14 +24,9 @@ export default function App() {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           console.log("Geolocation success:", position.coords);
-          const newLocation = {
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-          };
-          setUserLocation(newLocation);
           if (mapRef.current) {
             mapRef.current.flyTo({
-              center: [newLocation.longitude, newLocation.latitude],
+              center: [position.coords.longitude, position.coords.latitude],
               zoom: 14,
               duration: 2000,
             });
@@ -2080,7 +2073,7 @@ export default function App() {
         }}
         mapLib={maplibregl}
       >
-        {userLocation && (
+        {/* {userLocation && (
           <>
             <Marker
               longitude={userLocation.longitude}
@@ -2102,7 +2095,7 @@ export default function App() {
               </Popup>
             )}
           </>
-        )}
+        )} */}
         <div style={{ position: "absolute", right: 10, top: 10 }}>
           <NavigationControl />
         </div>
